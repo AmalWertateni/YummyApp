@@ -4,7 +4,7 @@ security:
             algorithm: auto
 
     providers:
-        users_in_db:
+        app_user_provider:
             entity:
                 class: App\Entity\User
                 property: email
@@ -16,17 +16,21 @@ security:
 
         main:
             lazy: true
-            provider: users_in_db
+            provider: app_user_provider
             form_login:
                 login_path: app_login
                 check_path: app_login
-                enable_csrf: true
-                default_target_path: /admin
+                default_target_path: admin_dashboard
             logout:
                 path: app_logout
                 target: app_login
 
     access_control:
-        - { path: ^/register, roles: PUBLIC_ACCESS }
+        # 🔐 LOGIN accessible sans connexion
         - { path: ^/login, roles: PUBLIC_ACCESS }
+
+        # 🔐 REGISTER accessible sans connexion
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+
+        # 🚫 TOUT /admin nécessite une connexion
         - { path: ^/admin, roles: ROLE_ADMIN }
