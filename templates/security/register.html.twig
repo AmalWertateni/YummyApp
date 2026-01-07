@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>📝 Inscription Admin</h1>
+
+    <form method="post">
+
+        <label>Nom</label><br>
+        <input type="text" name="nom" required><br><br>
+
+        <label>Prénom</label><br>
+        <input type="text" name="prenom" required><br><br>
+
+        <label>Email</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Telephone</label><br>
+        <input type="text" name="telephone" required><br><br>
+
+        <label>Mot de passe</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <button type="submit">Créer le compte admin</button>
+
+    </form>
+
+    <p>
+        Déjà un compte ?
+        <a href="{{ path('app_login') }}">Se connecter</a>
+    </p>
+{% endblock %}

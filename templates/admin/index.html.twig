@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block body %}
+    <h2 class="mb-4">📊 Dashboard Admin</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <a href="{{ path('app_categorie_index') }}" class="text-decoration-none">
+                <div class="card card-hover shadow text-center p-4">
+                    <h4>📂 Catégories</h4>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ path('app_plat_index') }}" class="text-decoration-none">
+                <div class="card card-hover shadow text-center p-4">
+                    <h4>🍽️ Plats</h4>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ path('app_restaurant_table_index') }}" class="text-decoration-none">
+                <div class="card card-hover shadow text-center p-4">
+                    <h4>🪑 Tables</h4>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ path('app_reservation_index') }}" class="text-decoration-none">
+                <div class="card card-hover shadow text-center p-4">
+                    <h4>📅 Réservations</h4>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ path('app_commande_index') }}" class="text-decoration-none">
+                <div class="card card-hover shadow text-center p-4">
+                    <h4>🧾 Commandes</h4>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ path('app_user_index') }}" class="text-decoration-none">
+                <div class="card card-hover shadow text-center p-4">
+                    <h4>👤 Utilisateurs</h4>
+                </div>
+            </a>
+        </div>
+
+    </div>
+{% endblock %}
