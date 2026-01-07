@@ -1,59 +1,569 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard Admin{% endblock %}
+{% block title %}Dashboard Admin - YummiApp{% endblock %}
 
 {% block body %}
-    <h2 class="mb-4">📊 Dashboard Admin</h2>
-
-    <div class="row g-4">
-
-        <div class="col-md-4">
-            <a href="{{ path('app_categorie_index') }}" class="text-decoration-none">
-                <div class="card card-hover shadow text-center p-4">
-                    <h4>📂 Catégories</h4>
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <!-- Utilisateurs -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card primary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-uppercase text-muted mb-2">Utilisateurs</h6>
+                            <h3 class="mb-0 fw-bold">{{ stats.users|default(0) }}</h3>
+                            <div class="mt-3">
+                                <span class="badge bg-success bg-opacity-10 text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>12%
+                                </span>
+                                <small class="text-muted ms-2">Depuis hier</small>
+                            </div>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 rounded p-3">
+                            <i class="fas fa-users fa-2x text-primary"></i>
+                        </div>
+                    </div>
                 </div>
-            </a>
+            </div>
         </div>
 
-        <div class="col-md-4">
-            <a href="{{ path('app_plat_index') }}" class="text-decoration-none">
-                <div class="card card-hover shadow text-center p-4">
-                    <h4>🍽️ Plats</h4>
+        <!-- Réservations Aujourd'hui -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card success h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-uppercase text-muted mb-2">Réservations Aujourd'hui</h6>
+                            <h3 class="mb-0 fw-bold">{{ stats.reservations_today|default(0) }}</h3>
+                            <div class="mt-3">
+                                <span class="badge bg-success bg-opacity-10 text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>18%
+                                </span>
+                                <small class="text-muted ms-2">Depuis hier</small>
+                            </div>
+                        </div>
+                        <div class="bg-success bg-opacity-10 rounded p-3">
+                            <i class="fas fa-calendar-check fa-2x text-success"></i>
+                        </div>
+                    </div>
                 </div>
-            </a>
+            </div>
         </div>
 
-        <div class="col-md-4">
-            <a href="{{ path('app_restaurant_table_index') }}" class="text-decoration-none">
-                <div class="card card-hover shadow text-center p-4">
-                    <h4>🪑 Tables</h4>
+        <!-- Commandes En Cours -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card info h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-uppercase text-muted mb-2">Commandes En Cours</h6>
+                            <h3 class="mb-0 fw-bold">{{ stats.orders_pending|default(0) }}</h3>
+                            <div class="mt-3">
+                                <span class="badge bg-success bg-opacity-10 text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>8%
+                                </span>
+                                <small class="text-muted ms-2">Depuis hier</small>
+                            </div>
+                        </div>
+                        <div class="bg-info bg-opacity-10 rounded p-3">
+                            <i class="fas fa-shopping-cart fa-2x text-info"></i>
+                        </div>
+                    </div>
                 </div>
-            </a>
+            </div>
         </div>
 
-        <div class="col-md-4">
-            <a href="{{ path('app_reservation_index') }}" class="text-decoration-none">
-                <div class="card card-hover shadow text-center p-4">
-                    <h4>📅 Réservations</h4>
+        <!-- Revenu (Mois) -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card warning h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-uppercase text-muted mb-2">Revenu (Mois)</h6>
+                            <h3 class="mb-0 fw-bold">{{ stats.revenue_month|default(0)|number_format(2, ',', ' ') }} €</h3>
+                            <div class="mt-3">
+                                <span class="badge bg-success bg-opacity-10 text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>22%
+                                </span>
+                                <small class="text-muted ms-2">Depuis mois dernier</small>
+                            </div>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded p-3">
+                            <i class="fas fa-euro-sign fa-2x text-warning"></i>
+                        </div>
+                    </div>
                 </div>
-            </a>
+            </div>
         </div>
-
-        <div class="col-md-4">
-            <a href="{{ path('app_commande_index') }}" class="text-decoration-none">
-                <div class="card card-hover shadow text-center p-4">
-                    <h4>🧾 Commandes</h4>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-md-4">
-            <a href="{{ path('app_user_index') }}" class="text-decoration-none">
-                <div class="card card-hover shadow text-center p-4">
-                    <h4>👤 Utilisateurs</h4>
-                </div>
-            </a>
-        </div>
-
     </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <!-- Reservations Chart -->
+        <div class="col-xl-8 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">Réservations - 7 derniers jours</h6>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="updateChart('week')">Cette semaine</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="updateChart('month')">Ce mois</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="updateChart('year')">Cette année</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="reservationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Status Chart -->
+        <div class="col-xl-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold">Statuts des Commandes</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="ordersStatusChart"></canvas>
+                    </div>
+                    <div class="mt-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="status-dot bg-warning me-2"></div>
+                                    <small>En attente</small>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="status-dot bg-success me-2"></div>
+                                    <small>Prête</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="status-dot bg-info me-2"></div>
+                                    <small>En préparation</small>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="status-dot bg-danger me-2"></div>
+                                    <small>Annulée</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Data Section -->
+    <div class="row mb-4">
+        <!-- Recent Reservations -->
+        <div class="col-xl-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">Réservations Récentes</h6>
+                    <a href="{{ path('app_reservation_index') }}" class="btn btn-sm btn-primary">
+                        Voir tout <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Client</th>
+                                <th>Date</th>
+                                <th>Heure</th>
+                                <th>Statut</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for reservation in recent_reservations %}
+                                <tr>
+                                    <td class="fw-bold">{{ reservation.client }}</td>
+                                    <td>{{ reservation.date }}</td>
+                                    <td>{{ reservation.heure }}</td>
+                                    <td>
+                                            <span class="badge bg-{{
+                                            reservation.statut == 'confirmée' ? 'success' :
+                                            (reservation.statut == 'annulée' ? 'danger' : 'warning')
+                                            }}">
+                                                {{ reservation.statut }}
+                                            </span>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">
+                                        <i class="fas fa-calendar-times fa-2x mb-2"></i>
+                                        <p class="mb-0">Aucune réservation récente</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="col-xl-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">Commandes Récentes</h6>
+                    <a href="{{ path('app_commande_index') }}" class="btn btn-sm btn-success">
+                        Voir tout <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Client</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in recent_orders %}
+                                <tr>
+                                    <td class="fw-bold">{{ order.id }}</td>
+                                    <td>{{ order.client }}</td>
+                                    <td class="fw-bold">{{ order.total|number_format(2, ',', ' ') }} €</td>
+                                    <td>
+                                            <span class="badge bg-{{
+                                            order.statut == 'servie' ? 'success' :
+                                            (order.statut == 'annulée' ? 'danger' :
+                                            (order.statut == 'prête' ? 'info' :
+                                            (order.statut == 'en préparation' ? 'warning' : 'secondary')))
+                                            }}">
+                                                {{ order.statut }}
+                                            </span>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">
+                                        <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                                        <p class="mb-0">Aucune commande récente</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold">Navigation Rapide</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <!-- Catégories -->
+                        <div class="col-xl-2 col-md-4 col-sm-6">
+                            <a href="{{ path('app_categorie_index') }}" class="quick-nav-card bg-primary bg-opacity-10">
+                                <div>
+                                    <i class="fas fa-folder fa-3x text-primary mb-3"></i>
+                                    <h5 class="mb-1">Catégories</h5>
+                                    <p class="mb-0 text-muted">{{ stats.categories|default(0) }} catégories</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Plats -->
+                        <div class="col-xl-2 col-md-4 col-sm-6">
+                            <a href="{{ path('app_plat_index') }}" class="quick-nav-card bg-success bg-opacity-10">
+                                <div>
+                                    <i class="fas fa-utensils fa-3x text-success mb-3"></i>
+                                    <h5 class="mb-1">Plats</h5>
+                                    <p class="mb-0 text-muted">{{ stats.plats|default(0) }} plats</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Tables -->
+                        <div class="col-xl-2 col-md-4 col-sm-6">
+                            <a href="{{ path('app_restaurant_table_index') }}" class="quick-nav-card bg-info bg-opacity-10">
+                                <div>
+                                    <i class="fas fa-chair fa-3x text-info mb-3"></i>
+                                    <h5 class="mb-1">Tables</h5>
+                                    <p class="mb-0 text-muted">{{ stats.tables|default(0) }} tables</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Réservations -->
+                        <div class="col-xl-2 col-md-4 col-sm-6">
+                            <a href="{{ path('app_reservation_index') }}" class="quick-nav-card bg-warning bg-opacity-10">
+                                <div>
+                                    <i class="fas fa-calendar-alt fa-3x text-warning mb-3"></i>
+                                    <h5 class="mb-1">Réservations</h5>
+                                    <p class="mb-0 text-muted">{{ stats.reservations|default(0) }} réservations</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Commandes -->
+                        <div class="col-xl-2 col-md-4 col-sm-6">
+                            <a href="{{ path('app_commande_index') }}" class="quick-nav-card bg-danger bg-opacity-10">
+                                <div>
+                                    <i class="fas fa-shopping-cart fa-3x text-danger mb-3"></i>
+                                    <h5 class="mb-1">Commandes</h5>
+                                    <p class="mb-0 text-muted">{{ stats.commandes|default(0) }} commandes</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Utilisateurs -->
+                        <div class="col-xl-2 col-md-4 col-sm-6">
+                            <a href="{{ path('app_user_index') }}" class="quick-nav-card bg-dark bg-opacity-10">
+                                <div>
+                                    <i class="fas fa-users fa-3x text-dark mb-3"></i>
+                                    <h5 class="mb-1">Utilisateurs</h5>
+                                    <p class="mb-0 text-muted">{{ stats.users|default(0) }} utilisateurs</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Données pour les graphiques (passées depuis le contrôleur)
+            const reservationsData = {
+                labels: {{ reservations_data.labels|json_encode|raw }},
+                data: {{ reservations_data.data|json_encode|raw }},
+                color: '{{ reservations_data.colors[0] }}'
+            };
+
+            const ordersStatusData = {
+                labels: {{ orders_status_data.labels|json_encode|raw }},
+                data: {{ orders_status_data.data|json_encode|raw }},
+                colors: {{ orders_status_data.colors|json_encode|raw }}
+            };
+
+            // 1. Graphique des réservations (ligne)
+            const reservationsCtx = document.getElementById('reservationsChart').getContext('2d');
+            const reservationsChart = new Chart(reservationsCtx, {
+                type: 'line',
+                data: {
+                    labels: reservationsData.labels,
+                    datasets: [{
+                        label: 'Nombre de réservations',
+                        data: reservationsData.data,
+                        backgroundColor: reservationsData.color + '20',
+                        borderColor: reservationsData.color,
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: reservationsData.color,
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            cornerRadius: 6,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Réservations: ${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            },
+                            ticks: {
+                                stepSize: 5
+                            },
+                            title: {
+                                display: true,
+                                text: 'Nombre de réservations'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Graphique des statuts des commandes (doughnut)
+            const ordersStatusCtx = document.getElementById('ordersStatusChart').getContext('2d');
+            const ordersStatusChart = new Chart(ordersStatusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ordersStatusData.labels,
+                    datasets: [{
+                        data: ordersStatusData.data,
+                        backgroundColor: [
+                            ordersStatusData.colors['En attente'],
+                            ordersStatusData.colors['Prête'],
+                            ordersStatusData.colors['En préparation'],
+                            ordersStatusData.colors['Annulée']
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Fonction pour mettre à jour le graphique des réservations
+            window.updateChart = function(period) {
+                let newData, newLabels;
+
+                switch(period) {
+                    case 'week':
+                        newLabels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+                        newData = [12, 19, 8, 15, 22, 18, 25];
+                        break;
+                    case 'month':
+                        newLabels = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'];
+                        newData = [45, 52, 38, 60];
+                        break;
+                    case 'year':
+                        newLabels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+                        newData = [120, 135, 110, 145, 160, 155, 180, 175, 165, 150, 140, 130];
+                        break;
+                    default:
+                        newLabels = reservationsData.labels;
+                        newData = reservationsData.data;
+                }
+
+                reservationsChart.data.labels = newLabels;
+                reservationsChart.data.datasets[0].data = newData;
+                reservationsChart.update();
+
+                // Afficher une notification
+                showNotification(`Graphique mis à jour: ${period === 'week' ? 'Cette semaine' : period === 'month' ? 'Ce mois' : 'Cette année'}`);
+            };
+
+            // Fonction pour afficher des notifications
+            function showNotification(message) {
+                // Créer une div de notification
+                const notification = document.createElement('div');
+                notification.className = 'alert alert-success alert-dismissible fade show position-fixed';
+                notification.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px;';
+                notification.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Supprimer automatiquement après 3 secondes
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        });
+    </script>
+
+    <style>
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Animation pour les cartes */
+        .quick-nav-card {
+            transition: all 0.3s ease;
+        }
+
+        .quick-nav-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+
+        /* Badges améliorés */
+        .badge {
+            padding: 0.5em 0.8em;
+            font-weight: 500;
+            font-size: 0.8em;
+        }
+
+        /* Couleurs pour les statuts */
+        .bg-success { background-color: #28a745 !important; }
+        .bg-warning { background-color: #ffc107 !important; }
+        .bg-danger { background-color: #dc3545 !important; }
+        .bg-info { background-color: #17a2b8 !important; }
+        .bg-secondary { background-color: #6c757d !important; }
+    </style>
 {% endblock %}

@@ -1,13 +1,116 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Categorie{% endblock %}
+{% block title %}Modifier {{ categorie.nom }} - YummiApp Admin{% endblock %}
 
 {% block body %}
-    <h1>Edit Categorie</h1>
+    <div class="container-fluid">
+        <!-- En-tête -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-edit text-primary mr-2"></i>Modifier la catégorie : {{ categorie.nom }}
+            </h1>
+            <div>
+                <a href="{{ path('app_categorie_index') }}" class="btn btn-secondary mr-2">
+                    <i class="fas fa-arrow-left mr-2"></i>Retour à la liste
+                </a>
+                <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-info">
+                    <i class="fas fa-eye mr-2"></i>Voir
+                </a>
+            </div>
+        </div>
 
-    {{ include('categorie/_form.html.twig', {'button_label': 'Update'}) }}
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle mr-2"></i>{{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
 
-    <a href="{{ path('app_categorie_index') }}">back to list</a>
+        <!-- Formulaire -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-edit mr-2"></i>Modifier les informations
+                </h6>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
-    {{ include('categorie/_delete_form.html.twig') }}
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        {{ form_label(form.nom, 'Nom de la catégorie *') }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-tag"></i>
+                            </span>
+                            </div>
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        {{ form_errors(form.nom) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        {{ form_label(form.description, 'Description *') }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-align-left"></i>
+                            </span>
+                            </div>
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+                        </div>
+                        {{ form_errors(form.description) }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ path('app_categorie_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-times mr-2"></i>Annuler
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-2"></i>Enregistrer les modifications
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <!-- Statistiques -->
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-chart-bar mr-2"></i>Statistiques de cette catégorie
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="stat-card">
+                            <h3 class="text-primary">{{ categorie.plats|length }}</h3>
+                            <p class="text-muted mb-0">Plats dans cette catégorie</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="stat-card">
+                            <h3 class="text-success">{{ categorie.createdAt ? categorie.createdAt|date('d/m/Y') : 'N/A' }}</h3>
+                            <p class="text-muted mb-0">Date de création</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="stat-card">
+                            <h3 class="text-info">{{ categorie.updatedAt ? categorie.updatedAt|date('d/m/Y') : 'Jamais modifiée' }}</h3>
+                            <p class="text-muted mb-0">Dernière modification</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
